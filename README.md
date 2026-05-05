@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="300px" src="https://raw.githubusercontent.com/jezyq14/gorkagorlice/refs/heads/main/assets/logo-with-text.svg" />
+</p>
+
 # Górka Gorlice
 
 Strona przeznaczona dla uczniów/rodziców/nauczycieli z [Zespołu Szkół nr 1 im. Ignacego Łukasiewicza w Gorlicach](https://lukasiewicz.gorlice.pl/).
