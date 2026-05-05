@@ -1,5 +1,9 @@
 {
-  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@repo/db": ["../../packages/db/index.ts"],
+      "@repo/db/*": ["../../packages/db/*"]
+    },
     "target": "ESNext",
     "module": "NodeNext",
     "strict": true,

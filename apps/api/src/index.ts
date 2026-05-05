@@ -1,14 +1,23 @@
-import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
-import { config } from 'dotenv';
-
-config();
+import { cors } from 'hono/cors';
+import { authRouter } from './routes/auth';
+import { serve } from '@hono/node-server';
 
 const app = new Hono();
 
+app.use('*', cors({
+  origin: [process.env.WEB_URL!],
+  credentials: true,
+}));
+
 app.get('/', (c) => {
-  return c.text('Hello Hono!');
-});
+  return c.text('👋 Górka Gorlice API!');
+})
+
+const routes = app
+  .route('/auth', authRouter)
+
+export type AppType = typeof routes;
 
 const PORT = Number(process.env.API_PORT ?? '3000');
 
@@ -22,3 +31,4 @@ serve(
   }
 );
 
+export default app;
