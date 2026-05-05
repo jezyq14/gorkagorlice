@@ -2,8 +2,9 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { authRouter } from './routes/auth';
 import { serve } from '@hono/node-server';
+import { AuthVariables } from './middleware/auth';
 
-const app = new Hono();
+const app = new Hono<AuthVariables>();
 
 app.use('*', cors({
   origin: [process.env.WEB_URL!],
