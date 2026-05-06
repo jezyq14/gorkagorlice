@@ -6,7 +6,7 @@
 
 Strona przeznaczona dla uczniów/rodziców/nauczycieli z [Zespołu Szkół nr 1 im. Ignacego Łukasiewicza w Gorlicach](https://lukasiewicz.gorlice.pl/).
 
-Póki co znajduje się w stanie kwantowym, istnieje tylko w mózgu autora :)
+Póki co znajduje się w stanie kwantowym, istnieje tylko w moim mózgu :)
 
 ## Planowane funkcjonalności
 
@@ -21,6 +21,6 @@ Póki co znajduje się w stanie kwantowym, istnieje tylko w mózgu autora :)
 - Backend: Node.js, [Hono](https://hono.dev/), PostgreSQL ([Drizzle ORM](https://orm.drizzle.team/))
 - Frontend: [SvelteKit](https://svelte.dev/), [shadcn-svelte](https://www.shadcn-svelte.com/)
 
-## Licensja
+## Licencja
 
 Projekt objęty jest licencją [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
