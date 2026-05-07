@@ -4,7 +4,7 @@ import { authRouter } from './routes/auth';
 import { serve } from '@hono/node-server';
 import { AuthVariables } from './middleware/auth';
 
-const app = new Hono<AuthVariables>();
+const app = new Hono<AuthVariables>().basePath("/v1");
 
 app.use('*', cors({
   origin: [process.env.WEB_URL!],

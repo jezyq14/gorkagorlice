@@ -6,13 +6,13 @@ export const load: PageServerLoad = async ({ url, locals }) => {
     const error = url.searchParams.get('error');
 
     if (!error) {
-        const user = await (await locals.api.auth.me.$get()).json();
+        const user = await (await locals.api.v1.auth.me.$get()).json();
         if (user?.id) {
             throw redirect(302, "/");
         }
 
         const callbackUrl = url.searchParams.get('callback') || WEB_URL + "/login";
-        const authUrl = locals.api.auth.google.$url({
+        const authUrl = locals.api.v1.auth.google.$url({
             query: { callback: callbackUrl }
         });
 
