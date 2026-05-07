@@ -1,6 +1,6 @@
 <script lang="ts">
 	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
+	import favicon from '$lib/assets/logo.svg';
 
   	import { ModeWatcher } from "mode-watcher";
 
@@ -8,6 +8,9 @@
 </script>
 
 <ModeWatcher />
-<svelte:head><link rel="icon" href={favicon} /></svelte:head>
+<svelte:head>
+	<link rel="icon" href={favicon} />
+	<title>Górka Gorlice</title>
+</svelte:head>
 {@render children()}
 
