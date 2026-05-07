@@ -24,3 +24,5 @@ Póki co znajduje się w stanie kwantowym, istnieje tylko w moim mózgu :)
 ## Licencja
 
 Projekt objęty jest licencją [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
+
+<img width="150px" src="https://raw.githubusercontent.com/jezyq14/gorkagorlice/refs/heads/main/assets/szczur-platform-badge.svg" />
