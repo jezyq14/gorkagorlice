@@ -4,7 +4,7 @@
 
 # Górka Gorlice
 
-Strona przeznaczona dla uczniów/rodziców/nauczycieli z [Zespołu Szkół nr 1 im. Ignacego Łukasiewicza w Gorlicach](https://lukasiewicz.gorlice.pl/).
+Strona przeznaczona dla uczniów/rodziców/nauczycieli z [Zespołu Szkół nr 1 im. Ignacego Łukasiewicza w Gorlicach](https://lukasiewicz.gorlice.pl/) (potocznie określaną Górką).
 
 Póki co znajduje się w stanie kwantowym, istnieje tylko w moim mózgu :)
 
