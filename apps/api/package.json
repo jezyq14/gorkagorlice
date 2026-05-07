@@ -14,10 +14,13 @@
     "dependencies": {
         "@hono/node-server": "^1.19.14",
         "@hono/oauth-providers": "^0.8.5",
+        "@hono/zod-validator": "^0.7.6",
+        "@repo/schema": "workspace:*",
         "drizzle-kit": "^0.31.10",
         "drizzle-orm": "^0.45.2",
         "hono": "^4.12.16",
-        "pg": "^8.20.0"
+        "pg": "^8.20.0",
+        "zod": "^4.4.3"
     },
     "devDependencies": {
         "@types/node": "^20.11.17",

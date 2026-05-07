@@ -1,3 +1,4 @@
+import { UserRoles, UserRole } from '@repo/schema';
 import { relations, type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
 import { pgTable, uuid, text, varchar, integer, timestamp } from 'drizzle-orm/pg-core';
 
@@ -21,7 +22,7 @@ export const users = pgTable('users', {
     email: varchar('email', { length: 255 }).unique().notNull(),
     avatar: text('avatar'),
     diaryNumber: integer('diary_number'),
-    roles: text('roles').array().notNull().default(['student']),
+    roles: text('roles').$type<UserRole[]>().array().notNull().default([UserRoles.USER]),
     classId: uuid('class_id').references(() => classes.id, { onDelete: 'set null' }),
     createdAt: timestamp('created_at').defaultNow(),
 });
