@@ -44,9 +44,9 @@
                     <p class="font-semibold">Kontakt</p>
                 </div>
                 <ul class="list-disc list-inside p-1">
-                    <li>E-mail: <a href="mailto:{data.mail}" class="text-chart-2">{data.mail}</a></li>
-                    <li>GitHub: <a href={data.github} class="text-chart-2">Klik!</a></li>
-                    <li>Discord: <a href={data.discord} class="text-chart-2">Klik!</a></li>
+                    <li>E-mail: <a href="mailto:{data.mail}" class="text-primary dark:text-chart-2 hover:underline">{data.mail}</a></li>
+                    <li>GitHub: <a href={data.github} class="text-primary dark:text-chart-2 hover:underline">Klik!</a></li>
+                    <li>Discord: <a href={data.discord} class="text-primary dark:text-chart-2 hover:underline">Klik!</a></li>
                 </ul>
             </div>
             
