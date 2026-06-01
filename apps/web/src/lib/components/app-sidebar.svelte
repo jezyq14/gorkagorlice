@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { ComponentProps } from "svelte";
+    import { onMount, type ComponentProps } from "svelte";
 
     import HouseIcon from "@lucide/svelte/icons/house";
     import CloverIcon from "@lucide/svelte/icons/clover";
@@ -23,6 +23,13 @@
         user: { name: string; email: string; avatar: string | null } | null;
         locationPath: string;
     } = $props();
+
+    // svelte-ignore state_referenced_locally
+    let location = $state(locationPath);
+
+    onMount(() => {
+        location = window.location.pathname;
+    })
 
     const data = {
         // svelte-ignore state_referenced_locally
@@ -93,7 +100,7 @@
             <Sidebar.Menu>
                 {#each data.generalNavItems as item}
                     <Sidebar.MenuItem>
-                        <Sidebar.MenuButton tooltipContent={item.label} isActive={item.isActive(locationPath)}>
+                        <Sidebar.MenuButton tooltipContent={item.label} isActive={item.isActive(location)}>
                             {#snippet child({ props })}
                                 <a href={item.href} {...props}>
                                     <item.icon />
@@ -111,7 +118,7 @@
             <Sidebar.Menu>
                 {#each data.classPanelNavItems as item}
                     <Sidebar.MenuItem>
-                        <Sidebar.MenuButton tooltipContent={item.label} isActive={item.isActive(locationPath)}>
+                        <Sidebar.MenuButton tooltipContent={item.label} isActive={item.isActive(location)}>
                             {#snippet child({ props })}
                                 <a href={item.href} {...props}>
                                     <item.icon />
@@ -129,7 +136,7 @@
             <Sidebar.Menu>
                 {#each data.appNavItems as item}
                     <Sidebar.MenuItem>
-                        <Sidebar.MenuButton tooltipContent={item.label} isActive={item.isActive(locationPath)}>
+                        <Sidebar.MenuButton tooltipContent={item.label} isActive={item.isActive(location)}>
                             {#snippet child({ props })}
                                 <a href={item.href} {...props}>
                                     <item.icon />
