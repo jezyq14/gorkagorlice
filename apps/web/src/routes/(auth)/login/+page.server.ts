@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { WEB_URL } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 export const load: PageServerLoad = async ({ url, locals }) => {
     const error = url.searchParams.get('error');
@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ url, locals }) => {
             throw redirect(302, "/");
         }
 
-        const callbackUrl = url.searchParams.get('callback') || WEB_URL + "/login";
+        const callbackUrl = url.searchParams.get('callback') || env.WEB_URL + "/login";
         const authUrl = locals.api.v1.auth.google.$url({
             query: { callback: callbackUrl }
         });
