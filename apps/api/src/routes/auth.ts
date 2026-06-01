@@ -46,7 +46,7 @@ const authRouter = new Hono<AuthVariables>()
                 return c.redirect(`${loginPageUrl}?error=${AuthErrorReason.AUTH_FAILED}`);
             }
 
-            if (!googleUser.email.toLowerCase().endsWith(`@${SCHOOL_EMAIL_DOMAIN}`)) {
+            if (!googleUser.email?.toLowerCase().endsWith(`@${SCHOOL_EMAIL_DOMAIN}`)) {
                 return c.redirect(`${loginPageUrl}?error=${AuthErrorReason.INVALID_DOMAIN}`);
             }
             const [user] = await db.insert(users).values({
