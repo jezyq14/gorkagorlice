@@ -1,6 +1,6 @@
 import { UserRoles, UserRole } from '@repo/schema';
 import { relations, type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
-import { pgTable, uuid, text, varchar, integer, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, varchar, integer, timestamp, date } from 'drizzle-orm/pg-core';
 
 // --- TABLES ---
 
@@ -33,6 +33,14 @@ export const sessions = pgTable('sessions', {
     expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
 });
 
+export const luckyNumbers = pgTable('lucky_numbers', {
+    id: uuid('id').defaultRandom().primaryKey(),
+    date: date('date', { mode: 'date' }).notNull().unique(),
+    numbers: integer('numbers').array().notNull(),
+    createdAt: timestamp('created_at').defaultNow(),
+});
+
+
 // --- RELATIONS ---
 
 export const usersRelations = relations(users, ({ many, one }) => ({
@@ -55,7 +63,9 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 export type User = InferSelectModel<typeof users>;
 export type Session = InferSelectModel<typeof sessions>;
 export type Class = InferSelectModel<typeof classes>;
+export type LuckyNumber = InferSelectModel<typeof luckyNumbers>;
 
 export type NewUser = InferInsertModel<typeof users>;
 export type NewSession = InferInsertModel<typeof sessions>;
 export type NewClass = InferInsertModel<typeof classes>;
+export type NewLuckyNumber = InferInsertModel<typeof luckyNumbers>;
