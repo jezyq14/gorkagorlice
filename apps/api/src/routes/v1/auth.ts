@@ -8,9 +8,9 @@ import { z } from 'zod';
 import { db, users, sessions } from '@repo/db';
 import { SCHOOL_EMAIL_DOMAIN, AuthErrorReason } from '@repo/schema';
 
-import { requireAuth, type AuthVariables } from '../middleware/auth';
+import { requireAuth, type AuthVariables } from '../../middleware/auth';
 
-const authRouter = new Hono<AuthVariables>()
+export const authRouter = new Hono<AuthVariables>()
     // GET /auth/google
     .get('/google',
         zValidator('query', z.object({
@@ -97,5 +97,3 @@ const authRouter = new Hono<AuthVariables>()
         });
         return c.json({ success: true });
     });
-
-export { authRouter };
