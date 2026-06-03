@@ -22,27 +22,29 @@ redisSubscriber.on('message', (channel, message) => {
 });
 
 export const luckyNumbersRouter = new Hono()
+    // GET /v1/lucky-numbers
+    .get('/', async (c) => {
+        try {
+            const latestNumbers = await db.query.luckyNumbers.findFirst({
+                orderBy: [desc(luckyNumbers.date)]
+            });
+
+            if (!latestNumbers) {
+                return c.json({ date: null, numbers: [] }, 404);
+            }
+
+            return c.json({
+                date: latestNumbers.date,
+                numbers: latestNumbers.numbers
+            });
+        } catch (error) {
+            console.error('Error fetching lucky numbers:', error);
+            return c.json({ error: 'Internal Server Error' }, 500);
+        }
+    })
     // GET /v1/lucky-numbers/stream
     .get('/stream', async (c) => {
         return streamSSE(c, async (stream) => {
-            try {
-                const latestNumbers = await db.query.luckyNumbers.findFirst({
-                    orderBy: [desc(luckyNumbers.date)]
-                });
-
-                if (latestNumbers) {
-                    await stream.writeSSE({
-                        event: 'update',
-                        data: JSON.stringify({
-                            date: latestNumbers.date,
-                            numbers: latestNumbers.numbers
-                        }),
-                    });
-                }
-            } catch (error) {
-                console.error('Error fetching initial lucky numbers:', error);
-            }
-
             const onUpdate = async (message: string) => {
                 try {
                     await stream.writeSSE({
