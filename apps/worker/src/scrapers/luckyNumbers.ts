@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import { logger } from '../utils/logger';
 
 export interface LuckyNumbersData {
     date: Date;
@@ -50,7 +51,7 @@ export async function fetchLuckyNumbers(): Promise<LuckyNumbersData | null> {
             .map(Number);
 
         if (!dateText || numbers.length === 0) {
-            console.warn('No lucky numbers found on the page.');
+            logger.warn('No lucky numbers found on the page.');
             return null;
         }
 
@@ -62,7 +63,7 @@ export async function fetchLuckyNumbers(): Promise<LuckyNumbersData | null> {
             numbers
         };
     } catch (error) {
-        console.error('Error scraping lucky numbers:', error);
+        logger.error({ error }, 'Error scraping lucky numbers:');
         return null;
     }
 }
