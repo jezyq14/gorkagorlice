@@ -1,20 +1,16 @@
 {
-    "baseUrl": ".",
-    "paths": {
-      "@repo/db": ["../../packages/db/index.ts"],
-      "@repo/db/*": ["../../packages/db/*"]
+    "compilerOptions": {
+        "outDir": "./dist",
+        "moduleResolution": "bundler",
+        "target": "ESNext",
+        "module": "ESNext",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "allowJs": true,
+        "checkJs": true,
+        "isolatedModules": true
     },
-    "target": "ESNext",
-    "module": "NodeNext",
-    "strict": true,
-    "verbatimModuleSyntax": true,
-    "skipLibCheck": true,
-    "types": [
-      "node"
-    ],
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
-    "outDir": "./dist"
-  },
-  "exclude": ["node_modules"]
+    "include": ["src/**/*"]
 }

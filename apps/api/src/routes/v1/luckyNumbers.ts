@@ -5,6 +5,7 @@ import { EventEmitter } from 'node:events';
 import { desc } from 'drizzle-orm';
 
 import { db, luckyNumbers } from '@repo/db';
+import { logger } from '../../utils/logger';
 
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
 const redisSubscriber = new Redis(REDIS_URL);
@@ -16,7 +17,7 @@ eventEmitter.setMaxListeners(1000);
 redisSubscriber.subscribe('NEW_LUCKY_NUMBERS');
 redisSubscriber.on('message', (channel, message) => {
     if (channel === 'NEW_LUCKY_NUMBERS') {
-        console.log('Backend received new lucky numbers from Redis. Sending to clients...');
+        logger.info('Backend received new lucky numbers from Redis. Sending to clients...');
         eventEmitter.emit('update', message);
     }
 });
@@ -38,7 +39,7 @@ export const luckyNumbersRouter = new Hono()
                 numbers: latestNumbers.numbers
             });
         } catch (error) {
-            console.error('Error fetching lucky numbers:', error);
+            logger.error({ error }, 'Error fetching lucky numbers');
             return c.json({ error: 'Internal Server Error' }, 500);
         }
     })
@@ -52,7 +53,7 @@ export const luckyNumbersRouter = new Hono()
                         data: message,
                     });
                 } catch (err) {
-                    console.error('Error sending SSE:', err);
+                    logger.error({ err }, 'Error sending SSE');
                 }
             };
 
