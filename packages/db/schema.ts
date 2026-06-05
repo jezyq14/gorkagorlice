@@ -6,6 +6,7 @@ import { pgTable, uuid, text, varchar, integer, timestamp, date } from 'drizzle-
 
 export const classes = pgTable('classes', {
     id: uuid('id').defaultRandom().primaryKey(),
+    vulcanId: varchar('vulcan_id', { length: 10 }).unique(),
     number: integer('year').notNull(),
     symbol: varchar('symbol', { length: 10 }).notNull(),
     studentCount: integer('student_count').notNull(),
