@@ -1,10 +1,13 @@
 import * as Sentry from "@sentry/hono/node";
 
-Sentry.init({
-  dsn: process.env.API_SENTRY_DSN,
-  sendDefaultPii: true,
-  tracesSampleRate: 1,
-});
+if (process.env.API_SENTRY_DSN) {
+  Sentry.init({
+    dsn: process.env.API_SENTRY_DSN,
+    environment: process.env.NODE_ENV || 'development',
+    sendDefaultPii: true,
+    tracesSampleRate: 1,
+  });
+}
 
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
