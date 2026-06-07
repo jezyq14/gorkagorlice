@@ -10,7 +10,8 @@ if (env.PUBLIC_FRONTEND_SENTRY_DSN) {
 
         integrations: [
             Sentry.browserTracingIntegration(),
-            Sentry.replayIntegration(),
+            // Turn off session replay for respecting privacy of users
+            // Sentry.replayIntegration(),
         ],
 
         replaysOnErrorSampleRate: 1.0,
