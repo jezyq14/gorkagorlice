@@ -13,6 +13,10 @@ const eventEmitter = new EventEmitter();
 
 eventEmitter.setMaxListeners(1000);
 
+redisSubscriber.on('error', (err) => {
+    logger.error({ err }, 'Redis connection error.');
+});
+
 // Redis NEW_LUCKY_NUMBERS channel subscriber
 redisSubscriber.subscribe('NEW_LUCKY_NUMBERS');
 redisSubscriber.on('message', (channel, message) => {
@@ -46,7 +50,10 @@ export const luckyNumbersRouter = new Hono()
     // GET /v1/lucky-numbers/stream
     .get('/stream', async (c) => {
         return streamSSE(c, async (stream) => {
+            let isAborted = false;
+
             const onUpdate = async (message: string) => {
+                if (isAborted) return;
                 try {
                     await stream.writeSSE({
                         event: 'update',
@@ -60,11 +67,17 @@ export const luckyNumbersRouter = new Hono()
             eventEmitter.on('update', onUpdate);
 
             stream.onAbort(() => {
+                isAborted = true;
                 eventEmitter.off('update', onUpdate);
             });
 
-            while (true) {
+            await stream.writeSSE({ event: 'ping', data: 'connected' });
+
+            while (!isAborted) {
                 await stream.sleep(15000);
+                if (!isAborted) {
+                    await stream.writeSSE({ event: 'ping', data: 'alive' });
+                }
             }
         });
     });
