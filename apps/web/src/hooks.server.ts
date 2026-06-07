@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/sveltekit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { env } from '$env/dynamic/public';
 
-import { createApi } from '$lib/api';
+import { createApi } from '$lib/server/api';
 
 if (env.PUBLIC_FRONTEND_SENTRY_DSN) {
     Sentry.init({
