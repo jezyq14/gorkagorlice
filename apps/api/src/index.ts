@@ -54,7 +54,7 @@ app.use(
 );
 
 app.get('/', (c) => {
-    return c.text('👋 Górka Gorlice API!');
+    return c.text('👋 Górka Gorlice API! Docs -> /docs');
 });
 
 const routes = app.route('/v1', v1Router);
