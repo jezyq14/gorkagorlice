@@ -15,6 +15,5 @@
     ],
     "svelteSortOrder": "options-scripts-markup-styles",
     "svelteBracketNewLine": true,
-    "svelteIndentScriptAndStyle": true,
-    "tailwindConfig": "./apps/web/tailwind.config.js"
+    "svelteIndentScriptAndStyle": true
 }
