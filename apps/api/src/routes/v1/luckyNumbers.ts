@@ -3,6 +3,8 @@ import { streamSSE } from 'hono/streaming';
 import Redis from 'ioredis';
 import { EventEmitter } from 'node:events';
 import { desc } from 'drizzle-orm';
+import * as v from 'valibot';
+import { describeRoute, resolver } from 'hono-openapi';
 
 import { db, luckyNumbers } from '@repo/db';
 import { logger } from '../../utils/logger';
@@ -17,7 +19,6 @@ redisSubscriber.on('error', (err) => {
     logger.error({ err }, 'Redis connection error.');
 });
 
-// Redis NEW_LUCKY_NUMBERS channel subscriber
 redisSubscriber.subscribe('NEW_LUCKY_NUMBERS');
 redisSubscriber.on('message', (channel, message) => {
     if (channel === 'NEW_LUCKY_NUMBERS') {
@@ -26,58 +27,89 @@ redisSubscriber.on('message', (channel, message) => {
     }
 });
 
+const luckyNumbersSchema = v.object({
+    date: v.nullable(v.string()),
+    numbers: v.array(v.number()),
+});
+
 export const luckyNumbersRouter = new Hono()
-    // GET /v1/lucky-numbers
-    .get('/', async (c) => {
-        try {
-            const latestNumbers = await db.query.luckyNumbers.findFirst({
-                orderBy: [desc(luckyNumbers.date)]
-            });
+    .get(
+        '/',
+        describeRoute({
+            description: 'Fetches the most recent lucky numbers',
+            responses: {
+                200: {
+                    description: 'Successfully fetched lucky numbers',
+                    content: { 'application/json': { schema: resolver(luckyNumbersSchema) } },
+                },
+                404: {
+                    description: 'No lucky numbers found in the database',
+                    content: { 'application/json': { schema: resolver(luckyNumbersSchema) } },
+                },
+                500: { description: 'Internal Server Error' },
+            },
+        }),
+        async (c) => {
+            try {
+                const latestNumbers = await db.query.luckyNumbers.findFirst({
+                    orderBy: [desc(luckyNumbers.date)],
+                });
 
-            if (!latestNumbers) {
-                return c.json({ date: null, numbers: [] }, 404);
-            }
-
-            return c.json({
-                date: latestNumbers.date,
-                numbers: latestNumbers.numbers
-            });
-        } catch (error) {
-            logger.error({ error }, 'Error fetching lucky numbers');
-            return c.json({ error: 'Internal Server Error' }, 500);
-        }
-    })
-    // GET /v1/lucky-numbers/stream
-    .get('/stream', async (c) => {
-        return streamSSE(c, async (stream) => {
-            let isAborted = false;
-
-            const onUpdate = async (message: string) => {
-                if (isAborted) return;
-                try {
-                    await stream.writeSSE({
-                        event: 'update',
-                        data: message,
-                    });
-                } catch (err) {
-                    logger.error({ err }, 'Error sending SSE');
+                if (!latestNumbers) {
+                    return c.json({ date: null, numbers: [] }, 404);
                 }
-            };
 
-            eventEmitter.on('update', onUpdate);
-
-            stream.onAbort(() => {
-                isAborted = true;
-                eventEmitter.off('update', onUpdate);
-            });
-
-            await stream.writeSSE({ event: 'ping', data: 'connected' });
-
-            while (!isAborted) {
-                await stream.sleep(15000);
-                if (!isAborted) {
-                    await stream.writeSSE({ event: 'ping', data: 'alive' });
-                }
+                return c.json({
+                    date: latestNumbers.date
+                        ? new Date(latestNumbers.date).toISOString().split('T')[0]
+                        : null,
+                    numbers: latestNumbers.numbers,
+                });
+            } catch (error) {
+                logger.error({ error }, 'Error fetching lucky numbers');
+                return c.json({ error: 'Internal Server Error' }, 500);
             }
-        });
-    });
+        },
+    )
+    .get(
+        '/stream',
+        describeRoute({
+            description: 'Real-time data stream (Server-Sent Events)',
+            responses: {
+                200: {
+                    description: 'Active SSE connection',
+                    content: { 'text/event-stream': {} },
+                },
+            },
+        }),
+        async (c) => {
+            return streamSSE(c, async (stream) => {
+                let isAborted = false;
+
+                const onUpdate = async (message: string) => {
+                    if (isAborted) return;
+                    try {
+                        await stream.writeSSE({ event: 'update', data: message });
+                    } catch (err) {
+                        logger.error({ err }, 'Error sending SSE payload');
+                    }
+                };
+
+                eventEmitter.on('update', onUpdate);
+
+                stream.onAbort(() => {
+                    isAborted = true;
+                    eventEmitter.off('update', onUpdate);
+                });
+
+                await stream.writeSSE({ event: 'ping', data: 'connected' });
+
+                while (!isAborted) {
+                    await stream.sleep(15000);
+                    if (!isAborted) {
+                        await stream.writeSSE({ event: 'ping', data: 'alive' });
+                    }
+                }
+            });
+        },
+    );
