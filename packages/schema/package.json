@@ -1,8 +1,5 @@
 {
     "name": "@repo/schema",
     "type": "module",
-    "main": "index.ts",
-    "dependencies": {
-        "zod": "^4.4.3"
-    }
+    "main": "index.ts"
 }
