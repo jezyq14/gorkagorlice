@@ -36,6 +36,27 @@
       "when": 1780945030503,
       "tag": "0004_shallow_zarek",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1781376893214,
+      "tag": "0005_shiny_vindicator",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1781377199648,
+      "tag": "0006_gifted_kronos",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1781378811588,
+      "tag": "0007_steep_silver_sable",
+      "breakpoints": true
     }
   ]
 }
