@@ -10,10 +10,12 @@
         "lint": "tsc --noEmit"
     },
     "dependencies": {
+        "@majusss/timetable-parser": "^1.7.0",
         "@repo/db": "workspace:*",
         "@repo/schema": "workspace:*",
         "@sentry/node": "^10.57.0",
         "cheerio": "^1.2.0",
+        "drizzle-orm": "^0.45.2",
         "ioredis": "^5.11.1",
         "node-cron": "^3.0.3",
         "pino": "^10.3.1",
