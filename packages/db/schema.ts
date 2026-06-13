@@ -1,6 +1,15 @@
 import { UserRoles, UserRole } from '@repo/schema';
 import { relations, type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
-import { pgTable, uuid, text, varchar, integer, timestamp, date, pgEnum } from 'drizzle-orm/pg-core';
+import {
+    pgTable,
+    uuid,
+    text,
+    varchar,
+    integer,
+    timestamp,
+    date,
+    pgEnum,
+} from 'drizzle-orm/pg-core';
 
 // --- TABLES ---
 
@@ -30,7 +39,9 @@ export const users = pgTable('users', {
 
 export const sessions = pgTable('sessions', {
     id: text('id').primaryKey(),
-    userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+    userId: uuid('user_id')
+        .notNull()
+        .references(() => users.id, { onDelete: 'cascade' }),
     expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
 });
 
@@ -41,16 +52,25 @@ export const luckyNumbers = pgTable('lucky_numbers', {
     createdAt: timestamp('created_at').defaultNow(),
 });
 
+export const timetableClasses = pgTable('timetable_classes', {
+    id: uuid('id').defaultRandom().primaryKey(),
+    vulcanId: varchar('vulcan_id', { length: 10 }).unique().notNull(),
+    name: varchar('name', { length: 255 }).notNull(),
+    friendlyName: varchar('friendly_name', { length: 255 }),
+});
+
 export const teachers = pgTable('teachers', {
     id: uuid('id').defaultRandom().primaryKey(),
     vulcanId: varchar('vulcan_id', { length: 10 }).unique(),
-    name: varchar('name', { length: 255 }).notNull(),
+    name: varchar('name', { length: 255 }).unique().notNull(),
+    friendlyName: varchar('friendly_name', { length: 255 }),
 });
 
 export const rooms = pgTable('rooms', {
     id: uuid('id').defaultRandom().primaryKey(),
     vulcanId: varchar('vulcan_id', { length: 10 }).unique(),
     name: varchar('name', { length: 50 }).notNull(),
+    friendlyName: varchar('friendly_name', { length: 255 }),
 });
 
 export const timetableHours = pgTable('timetable_hours', {
@@ -65,7 +85,7 @@ export const scheduleVariantEnum = pgEnum('schedule_variant', [
     'SHORT_30_NO_BREAK',
     'SHORT_35_LONG_BREAK',
     'SHORT_35_NO_BREAK',
-    'OTHER'
+    'OTHER',
 ]);
 
 export const scheduleOverrides = pgTable('schedule_overrides', {
@@ -79,9 +99,13 @@ export const scheduleOverrides = pgTable('schedule_overrides', {
 export const timetableLessons = pgTable('timetable_lessons', {
     id: uuid('id').defaultRandom().primaryKey(),
 
-    classId: uuid('class_id').notNull().references(() => classes.id, { onDelete: 'cascade' }),
+    classId: uuid('class_id')
+        .notNull()
+        .references(() => timetableClasses.id, { onDelete: 'cascade' }),
     dayOfWeek: integer('day_of_week').notNull(),
-    hourNumber: integer('hour_number').notNull().references(() => timetableHours.number, { onDelete: 'cascade' }),
+    hourNumber: integer('hour_number')
+        .notNull()
+        .references(() => timetableHours.number, { onDelete: 'cascade' }),
 
     subject: varchar('subject', { length: 100 }).notNull(),
     groupName: varchar('group_name', { length: 50 }),
@@ -127,7 +151,10 @@ export const timetableLessonsRelations = relations(timetableLessons, ({ one }) =
     class: one(classes, { fields: [timetableLessons.classId], references: [classes.id] }),
     teacher: one(teachers, { fields: [timetableLessons.teacherId], references: [teachers.id] }),
     room: one(rooms, { fields: [timetableLessons.roomId], references: [rooms.id] }),
-    hour: one(timetableHours, { fields: [timetableLessons.hourNumber], references: [timetableHours.number] })
+    hour: one(timetableHours, {
+        fields: [timetableLessons.hourNumber],
+        references: [timetableHours.number],
+    }),
 }));
 
 // --- TYPES ---
