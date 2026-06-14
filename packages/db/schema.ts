@@ -148,7 +148,7 @@ export const roomsRelations = relations(rooms, ({ many }) => ({
 }));
 
 export const timetableLessonsRelations = relations(timetableLessons, ({ one }) => ({
-    class: one(classes, { fields: [timetableLessons.classId], references: [classes.id] }),
+    class: one(timetableClasses, { fields: [timetableLessons.classId], references: [timetableClasses.id] }),
     teacher: one(teachers, { fields: [timetableLessons.teacherId], references: [teachers.id] }),
     room: one(rooms, { fields: [timetableLessons.roomId], references: [rooms.id] }),
     hour: one(timetableHours, {
