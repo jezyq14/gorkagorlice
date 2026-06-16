@@ -18,7 +18,7 @@ Póki co znajduje się w stanie kwantowym, istnieje tylko w moim mózgu :)
 
 ## Technologie
 
-- Backend: Node.js, [Hono](https://hono.dev/), PostgreSQL ([Drizzle ORM](https://orm.drizzle.team/))
+- Backend: Node.js, [Hono](https://hono.dev/), PostgreSQL ([Drizzle ORM](https://orm.drizzle.team/)), [Redis](https://redis.io/)
 - Frontend: [SvelteKit](https://svelte.dev/), [shadcn-svelte](https://www.shadcn-svelte.com/)
 
 ## Licencja
