@@ -13,12 +13,11 @@ export const load: PageServerLoad = async ({ params, locals }) => {
     } else if (type === 'teacher') {
         response = await locals.api.v1.timetable.teacher[':alias'].$get({ param: { alias: id } });
     } else {
-        throw error(500, "Niepoprawny typ planu lekcji!");
+        throw error(400, "Niepoprawny typ planu lekcji!");
     }
 
-    if (!response?.ok) {
-        throw error(500, "Nie udało się pobrać planu lekcji!");
-    }
+    if (response.status === 404) throw error(404, "Nie znaleziono planu lekcji.");
+    if (!response.ok) throw error(500, "Błąd serwera podczas pobierania planu.");
 
     const timetable = await response.json();
 
