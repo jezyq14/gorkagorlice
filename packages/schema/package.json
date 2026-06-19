@@ -1,5 +1,8 @@
 {
     "name": "@repo/schema",
     "type": "module",
-    "main": "index.ts"
+    "main": "index.ts",
+    "dependencies": {
+        "valibot": "^1.4.1"
+    }
 }
