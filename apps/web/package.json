@@ -12,7 +12,7 @@
     "devDependencies": {
         "@fontsource-variable/inter": "latest",
         "@internationalized/date": "^3.12.2",
-        "@lucide/svelte": "^1.18.0",
+        "@lucide/svelte": "^1.21.0",
         "@repo/api": "workspace:*",
         "@repo/schema": "workspace:*",
         "@sveltejs/adapter-node": "^5.5.4",
