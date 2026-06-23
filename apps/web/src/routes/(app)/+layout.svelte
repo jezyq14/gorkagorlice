@@ -15,7 +15,7 @@
 
 <Sidebar.Provider class="h-dvh">
     <AppSidebar locationPath={data.locationPath} user={data?.user} />
-    <main class="h-full w-full">
+    <main class="flex h-full w-full flex-col">
         <header
             class="border-border flex w-full items-center justify-between border-b p-2 px-2 md:px-4"
         >
@@ -23,11 +23,11 @@
                 <Sidebar.Trigger class="hidden md:block" />
                 <MobileSidebarTrigger class="md:hidden" />
             </div>
-            <Button href="/" variant="ghost"
-                ><img src={logoImage} alt="logo" class="md:hidden" /></Button
+            <Button href="/" variant="ghost" class="md:hidden"
+                ><img src={logoImage} alt="logo" /></Button
             >
             <ThemeToggler />
         </header>
-        {@render children?.()}
+        <div class="flex-1">{@render children?.()}</div>
     </main>
 </Sidebar.Provider>
